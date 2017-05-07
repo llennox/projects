@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+{% if email_sent %}
+<p  class="allText">an activation link has been sent to the email address you provided</p>
+{% else %}
+{% if email_taken %}
+<p  class="allText">that email is already in use, link to recovery page</p>
+{% endif %}
+{% if username_taken %}
+<p  class="allText">that username is already in use, link to recovery page</p>
+{% endif %}
+<title>register</title>
+<form class="form-inline" action="/register_page/b73f4c9c-fde1-45fa-a7e7-0474062b9868" method="post">
+    {{ form.non_field_errors }}
+    {% csrf_token %}
+    <p  class="allText">username:</p>
+    <div class="fieldWrapperDates">
+        {{ form.username.errors }}
+
+        {{ form.username }}
+        
+    </div>
+    <p  class="allText">Email:</p>
+    <div class="fieldWrapperDates">
+        {{ form.email.errors }}
+
+        {{ form.email }}
+        
+    </div>
+    <p  class="allText">Password:</p>
+    <div class="fieldWrapper">
+        {{ form.password1.errors }}
+                    
+        {{ form.password1 }}
+    </div>
+    <p  class="allText">Confirm password:</p>
+    <div class="fieldWrapper">
+        {{ form.password2.errors }}
+                    
+        {{ form.password2 }} 
+    </div>                                 
+    <div class="g-recaptcha" data-sitekey="6Le4TQgUAAAAAKY5pQW7n6e32O522ATSmJnO0bMK"></div>
+    <p class="newSearch"><button type="submit" tabindex="8" id="verify_email" 
+    class="col-sm-push-6 btn btn-primary text-uppercase btn-large">Verify email</button></p>
+            
+</form>
+{% endif %}
+{% endblock %}

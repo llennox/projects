@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<title>sign_in</title>
+{% if request.user.is_authenticated %}
+<p>you are logged in as {{ user.username }}:</p><form method="post" action="/logout_page/">{% csrf_token %}<button type="submit" tabindex="8" id="verify_email" 
+    class="col-sm-push-6 btn btn-primary text-uppercase btn-large">Logout</button></form>
+{% else %}
+{% if disabled_account %}
+<p>The password is valid, but the account has been disabled! you may need to verify email, click here to send a new activation email</p><a href="http://localhost:8000/new-activation-link/{{ id_user }}">send a new activation link!</a>
+{% endif %}
+{% if incorrect %}
+<p> the password or username were incorrect, click <a href='http://127.0.0.1:8000/reset_password/'>here</a> to reset password</p> 
+{% endif %}
+<p>OK i need to sign users in here and send them here with the propmt "your account has been activated</p>
+
+<form class="form-inline" action="/sign_page/" method="post">
+    {{ form.non_field_errors }}
+    {% csrf_token %}
+    <p class="chooseDates1">username:</p>
+    <div class="fieldWrapperDates">
+        {{ form.username.errors }}
+
+        {{ form.username }}
+        
+    </div>
+    
+    <p class="chooseDates">Password:</p>
+    <div class="fieldWrapper">
+        {{ form.password1.errors }}
+                    
+        {{ form.password1 }}
+    </div>
+    
+    
+    <p class="newSearch"><button type="submit" tabindex="8" id="verify_email" 
+    class="col-sm-push-6 btn btn-primary text-uppercase btn-large">Sign In</button></p>
+{% endif %}
+{% endblock %}

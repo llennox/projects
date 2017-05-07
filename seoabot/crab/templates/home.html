@@ -1,0 +1,112 @@
+{% load staticfiles %}
+{% load crabtemplate %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="google-site-verification" content="LLVvqrvekWE6jTwX7lGjzJSvBp5TXJhhpwxSNm_idws" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="/static/js/jquery.js"></script> 
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/moment.min.js"></script>
+
+
+
+
+    <!-- Bootstrap -->
+    <link href="/static/css/custom.css" rel="stylesheet" media="screen">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/static/css/bootstrap-responsive.css" rel="stylesheet" media="screen">
+
+
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+       <div class="wrapper">
+       <a href="{% url 'home' %}"  class="Logo">
+       <img src="{% static 'images/crabWlogo.png' %}" alt="CRAB!"  class="Logoimg">
+       </a>
+       
+       <p class="text">seoabot (Search Engine Optimiztion Algorithmic bot) is a backlink checker, use it to build page rank. Enter a url to find out if the links contained on that website link back to the original website. 
+This is important for building page rank, <a href="https://support.google.com/webmasters/answer/70897?hl=en#3">here</a> is some more information.
+Keep in mind seoabot may be disallowed from visiting certain websites because of their robots.txt file, if you'd like to learn more: here is an <a href="http://www.robotstxt.org/robotstxt.html">explanation.</a></p>
+
+
+<div class="formWrapper">
+<form class="form-inline" action="/" method="post">
+    {{ form.non_field_errors }}
+    {% csrf_token %}
+    <p class="urlForm">Enter a url:</p>
+    <div class="myurlForm">
+        {{ form.url.errors }}
+        {{ form.url }}
+    </div>  
+{% if workingd %}
+{% else %}
+<p class="newSearch"><button type="submit" tabindex="8" id="btn-login" 
+    class="col-sm-push-6 btn btn-primary text-uppercase btn-large">GO!</button></p>
+</form> 
+</div>
+{% endif %}
+{% if workingd %}
+<p class="text"> seoabot avoids these websites: google, facebook, instagram, youtube, twitter, wordpress</p>
+{% for key,value in workingd.items %}
+<hr>
+{% if key|keyColor %}<p class="bltext" style="color:red;">{{ key }}: <a href="{{value}}">{{ value }}</a>{% else %}<p class="bltext" style="color:green;">{{ key }}: <a href="{{value}}">{{ value }}</a>{% endif %}</p>
+<hr>
+{% endfor %}
+<p class="text">click on the crab to search again! To raise page rank for your website try getting in touch with the websites that do not backlink and ask them to add your url to their website.</p>
+{% else %}
+<div id="loading" class="sk-cube-grid">
+  <div class="sk-cube sk-cube1"></div>
+  <div class="sk-cube sk-cube2"></div>
+  <div class="sk-cube sk-cube3"></div>
+  <div class="sk-cube sk-cube4"></div>
+  <div class="sk-cube sk-cube5"></div>
+  <div class="sk-cube sk-cube6"></div>
+  <div class="sk-cube sk-cube7"></div>
+  <div class="sk-cube sk-cube8"></div>
+  <div class="sk-cube sk-cube9"></div>
+  <p class="text" id="loading">This may take up to 5 minutes</p>
+</div>
+
+{% endif %}
+
+            <div class="push"></div>
+    </div>
+         <div class="footer">
+            <p class="footerText">Created by Connell Gough, email connell-gough@seoabot.com for Web design, data aggregation, and hosting inquiries.</p>
+         </div>
+  </body>
+
+
+
+
+
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $("#loading").hide();
+    $("#btn-login").click(function(){
+        $("#loading").show();
+        $("#btn-login").hide();
+    });
+    $("#btn-login").click(function(){
+        $("#welcomeText").hide();
+    });
+});
+</script>
+
+
+

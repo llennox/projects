@@ -1,0 +1,46 @@
+"""bl4btc URL Configuration
+
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/1.9/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  url(r'^$', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  url(r'^$', Home.as_view(), name='home')
+Including another URLconf
+    1. Add an import:  from blog import urls as blog_urls
+    2. Import the include() function: from django.conf.urls import url, include
+    3. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
+"""
+from django.conf.urls import url
+from django.contrib import admin
+from btc import views
+from django.conf import settings
+from django.conf.urls.static import static
+
+urlpatterns = [
+    url(r'^admin/', admin.site.urls),
+    url(r'^$', views.home_page, name='home_page'),
+    url(r'^contact_page/$', views.contact_page, name='contact_page'),
+    url(r'^faq_page/$', views.faq_page, name='faq_page'),
+    url(r'^sign_page/$', views.sign_page, name='sign_page'),
+    url(r'^logout_page/$', views.logout_view, name='logout_view'),
+    url(r'^register_page/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\Z)$', views.register_page, name='register_page'),
+    url(r'^activate/(?P<key>.+)$', views.activation, name='activation'),
+    url(r'^new-activation-link/(?P<user_id>.+)/$',views.new_activation_link, name='new_activation_link	'),
+    url(r'^change_password/$', views.change_password, name='change_password'),
+    url(r'^dashboard/$', views.dashboard, name='dashboard'),
+    url(r'^reset_password/$', views.reset_password, name='reset_password'),
+    url(r'^sell_links/$', views.sell_links, name='sell_links'),
+    url(r'^buy_links/$', views.buy_links, name='buy_links'), 
+    url(r'^buy_link_confirmation/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\Z)$', views.buy_link_confirmation, name='buy_link_confirmation'), 
+    url(r'^list_unlist/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\Z)$', views.list_unlist, name='list_unlist'),
+    url(r'^validate/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/([0-1]\Z)$', views.validate, name='validate'), 
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+
+
+
+

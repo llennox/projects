@@ -1,0 +1,20 @@
+
+## add which domain the seller needs to host the link on/
+  
+###put contact form on contact us page/, do home page  RSYNC contact_page.html, forms, custom css, home.html, views, images/
+
+
+### fix link on dashboard/, fix recaptcha/,###### fix search system on buy links, goback button after submitting backlink to be hosted/
+also URLvalidator on buy_link_confirm/
+
+deploy and set system varibles please!! //
+
+need to have a once a day script that will prompt me for btc wallet password, delete payout payoutescrowLedger objects if they haven't been validated in three days, also delete the ones over thirty days and change account balances including referer. validates links. make sure escrowpayoutledger deletes clean 
+
+fix withdrawals accept paypal revamp css html. a how it works page, landing page will be similar to backlinks.com
+
+colors:
+EDAB00
+84DA00
+C5005D 
+0417A3

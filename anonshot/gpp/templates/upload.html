@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+
+<p>photo will be uploaded to your current location, it must be under one megabyte. No violence or nudity. Image must be under 2mb and will be resized if it exceeds 800x600 px widthxheight</p> 
+
+<p>you are posting to {{ place }}</p>
+{% if fail == True %} 
+<p> your upload failed, make sure your image is under 2.5mb</p>
+{% endif %}
+{% if success == True %}
+<p>success, your image was successfully uploaded</p>
+<a href="{% url 'upload_page' %}" id="sign_page">>>Go Back</a>
+{% else %}
+{{ success }}
+
+
+<div>
+<form class="form-inline" action="/upload/" method="post" enctype="multipart/form-data">
+    {{ form.non_field_errors }}
+    {% csrf_token %}
+    <p class="allText">choose a photo to upload:</p>
+    <div class="upload">
+        {{ form.photo.errors }}
+
+        {{ form.photo }} 
+    </div>
+
+    <p  class="allText">Caption:</p>
+    <div class="fieldWrapperDates">
+        {{ form.caption.errors }}
+
+        {{ form.caption }}
+        
+    </div>
+    <div id="{{ photo.uuid }}captcha" class="g-recaptcha" data-sitekey="6Le4TQgUAAAAAKY5pQW7n6e32O522ATSmJnO0bMK"></div>
+ <p class="newSearch"><button class="btn btn-info" type="submit" tabindex="8" id="verify_email">upload</button></p>
+            
+</form>
+</div>
+{% endif %}
+
+{% endblock %}

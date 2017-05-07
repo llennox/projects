@@ -1,0 +1,130 @@
+{% extends "userbase.html" %}
+{% block content %}
+{% load tags %}
+<div class="buyBacklink">
+<p class="allText">send coins to this address to credit account: {{ profil.deposit_add }}</p>
+
+<p class="allText"> amount in escrow = {{ profil.in_escrow}} millibits</p>
+
+<p class="allText"> account balance = {{ profil.account_balance }} millibits</p>
+</div>
+
+
+{% if withdrawal %}
+{{ withdrawal }}
+{% endif %} 
+
+<form class="form-inline" action="/dashboard/" method="post">
+    {{ form.non_field_errors }}
+    {% csrf_token %}
+    <p class="allText">BTC Withdrawal Address:</p>
+    <div class="fieldWrapperDates">
+        {{ form.btcAddress.errors }}
+
+        {{ form.btcAddress }}
+        
+    </div>
+    
+    <p  class="allText">amount in credits:</p>
+    <div class="fieldWrapper">
+        {{ form.amount.errors }}
+                    
+        {{ form.amount }}
+    </div>
+    
+    <div class="fieldWrapper">
+        {{ form.captcha.errors }}
+                    
+        {{ form.captcha }}
+    </div>
+    
+
+    <p class="newSearch"><button type="submit" tabindex="8" id="verify_email" 
+    class="btn btn-primary">Withdraw</button></p>
+</form>
+
+
+
+{% for payout in buyerpayouts %} 
+ 
+{% if payout.validated == True %}
+<div class="buyBacklink">
+<p  class="allText">links being hosted:</p>
+<p  class="allText">payout amount in credits: {{ payout.price }}</p>
+<p  class="allText">starting date:{{ payout.timestampofval }}</p> 
+<p  class="allText">ending date:{{ payout.timestampofval30 }}</p>
+<p  class="allText">Link being hosted: {{ payout.backlink }}</p>
+<p  class="allText">unique id of domain: {{ payout.sellUrlUUID }}</p>
+</div>
+{% else %}
+<div class="buyBacklink">
+<p  class="allText">links not yet validated:</p>
+<p  class="allText">credits in escrow: {{ payout.price }}</p>
+<p  class="allText">Link to be hosted: {{ payout.backlink }}</p>
+<p  class="allText">unique id of domain: {{ payout.sellUrlUUID }}</p>
+<p  class="allText">date of offer: {{ payout.timestamp }}</p>
+</div>
+{% endif %}
+{% endfor %}
+
+
+
+
+{% for payout in payouts %} 
+ 
+{% if payout.validated == True %}
+<div class="buyBacklink">
+<p  class="allText">Hosted Links:</p>
+<p  class="allText">payout amount in credits: {{ payout.price|mul:0.75 }}</p>
+<p  class="allText">starting date:{{ payout.timestampofval }}</p> 
+<p  class="allText">ending date:{{ payout.timestampofval30 }}</p>
+<p  class="allText">Link being hosted: {{ payout.backlink }}</p>
+<p  class="allText">On your domain: {{ payout.domain }}</p>
+</div>
+{% else %}
+<div class="buyBacklink">
+<p  class="allText">Validate link:</p>
+
+<p  class="allText"> put this hyperlink: &lt;a href="{{ payout.backlink }}" &gt;{{ payout.backlink }}&lt;/a&gt; on your domain {{ payout.domain }} , make sure bots are allowed by your robot.txt file</p> 
+<p  class="allText"> your payout will be {{ payout.price|mul:0.75 }} credits after 30 days of hosting this link</p>
+<a href="http://localhost:8000/validate/{{ payout.ledgerUUID }}/1" id="dashboard"  class="btn btn-primary">Validate</a>
+<a href="http://localhost:8000/validate/{{ payout.ledgerUUID }}/0" id="dashboard"  class="btn btn-primary">Deny</a>
+</div>
+{% endif %}
+{% endfor %}
+
+
+<p  class="allText">domains:</p>
+
+{% if domains %}
+
+{% for dom in domains %}
+{% if dom.listed == True %}
+<div class="buyBacklink">
+<p  class="allText"> URL:{{ dom.website }} moz score:{{ dom.mozscore }}
+<a href="http://localhost:8000/list_unlist/{{ dom.urluuid }}" id="list"  class="btn btn-primary">unlist link</a>
+</div>
+{% else %}
+<div class="buyBacklink">
+<p  class="allText"> URL:{{ dom.website }} moz score:{{ dom.mozscore }}
+<a href="http://localhost:8000/list_unlist/{{ dom.urluuid }}"  id="list" class="btn btn-primary">list link</a>
+</div>
+{% endif %}
+
+
+{% endfor %}
+
+{% else %}
+
+<p  class="allText">None</p>
+<a href="http://localhost:8000/sell_links/" class="btn btn-primary">Sell Links</a></button>
+{% endif %}
+
+
+
+
+
+
+
+<p  class="refText">here's your referrer link: http://localhost:8000/sign_page/{{ profil.myuuid }} you will recieve 5% of credits (from my share) per payout of any one who sells backlinks you refer to the site.</p>
+{% endblock %}

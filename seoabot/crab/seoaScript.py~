@@ -1,0 +1,222 @@
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+import os
+import multiprocessing as mp
+from selenium.common.exceptions import NoSuchElementException
+import string
+import robotexclusionrulesparser
+import re
+import time
+
+#add an avoid list, delete dupes in the last extList, maybe delete for i in range (0,3) 
+avoidList = ['google','facebook','instagram','youtube','twitter', 'wordpress']
+
+
+
+
+
+def checkUrl(url): #make sure a valid url has been entered
+    if url[:4] == "http" and url.endswith('/'):
+        return True
+    else:
+        
+        return False
+
+def seoaPass(url):
+    robotsUrl = re.findall(r'.*[.][a-zA-Z]{2,3}', url)
+    
+    robotsUrl = str(robotsUrl[0])
+    
+    robotsUrltxt = robotsUrl + '/robots.txt'
+    rerp = robotexclusionrulesparser.RobotExclusionRulesParser()
+    try:
+        rerp.fetch(robotsUrltxt)
+        if rerp.is_allowed("seoabot/0.9 selenium webdriver, see http//:seoabot.com", url):
+            return True
+        else:
+            print(url + "      :disallow")
+            return False
+    except:
+        return False
+
+def strainUrl(url, extList, intList, mailtoList, blockedList, currIntUrl):
+    driver1 = webdriver.Remote(
+    command_executor='http://127.0.0.1:4444/wd/hub',
+    desired_capabilities=DesiredCapabilities.PHANTOMJS)
+    robotsUrl = re.findall(r'.*[.][a-zA-Z]+[\/]', url)
+    if robotsUrl is not None:
+        robotsUrl = str(robotsUrl[0])
+    
+    if any(item in url for item in avoidList):###fix this, need to see if any item in avoidList matches any string inside url
+        extList = []
+        print("avoid list worked")
+        return
+    else:
+        pass
+    
+    if url not in blockedList and seoaPass(url) == True:
+        time.sleep(2)
+        driver1.get(url)
+        
+        links = driver1.find_elements_by_tag_name('a')
+        for link in links:
+            
+            link = link.get_attribute("href")
+            
+            if link is not None and any(item in link for item in avoidList):
+                blockedList.append(link)
+                print("avoid list worked")
+                return
+            else:
+                pass
+            if link is not None and link[:4] == "http" and seoaPass(link) == True:
+
+                robotsLink = re.findall(r'.*[.][a-zA-Z]+[\/]', link)
+                
+                if robotsLink is not None:
+                    robotsLink = str(robotsLink[0])
+                robotsLink = re.sub('www.','',robotsLink)
+                robotsUrl = re.sub('www.','',robotsUrl)
+                
+                if link is not None and robotsLink == robotsUrl and link not in intList and '/#' not in link:
+                    
+                    intList.append(link)
+                    continue
+                elif link is not None and robotsLink != robotsUrl and link not in extList and link[:4] == "http":
+                    extList.append(link)
+                    continue
+
+             
+                else:
+                    continue
+            
+            else:
+                if link == None:
+                    continue
+                else:
+                    blockedList.append(link)
+        
+        #driver1.close
+        return                
+    else:
+        
+        blockedList.append(url)
+        
+        return 
+
+def controller(url):
+    ogurl = re.findall(r'.*[.][a-zA-Z]+[\/]', url)
+    extList = []
+    intList = []
+    mailtoList = [] 
+    blockedList = []
+    backlinkList = []
+    nobacklinkList = []
+
+    workingd = {}
+    counter = 1
+    counter1 = 1
+    nogextList = []
+    currIntUrl = url
+    strainUrl(url, extList, intList, mailtoList, blockedList, currIntUrl) 
+    ogintList = list(intList)
+    print(intList)
+    for item in ogintList:
+        
+        url = item
+        strainUrl(url, extList, intList, mailtoList, blockedList, currIntUrl)
+        
+        ogextList = list(extList)
+        print(extList)
+        intList = []
+        extList = []
+        mailtoList = [] 
+        blockedList = []
+             
+        
+            
+        for item in ogextList:
+           
+            robotsUrl = re.findall(r'.*[.][a-zA-Z]+[\/]', item)
+            robotsUrl = str(robotsUrl[0])
+            if robotsUrl not in nogextList:
+                nogextList.append(robotsUrl)
+                
+    print(nogextList)      
+    for item1 in nogextList:
+        print("item1 in nogextList    " + item1)
+        url = item1
+        intList = []
+        currIntUrl = url
+        strainUrl(url, extList, intList, mailtoList, blockedList, currIntUrl)
+        ogintList = list(intList)    
+        print(ogintList)
+        
+        timeout = time.time() + 60      
+        for item in ogintList:
+            if time.time() > timeout:
+                print("break")
+                continue
+            url = item
+            currIntUrl = url
+            extList = []
+            strainUrl(url, extList, intList, mailtoList, blockedList, currIntUrl)            
+            for litem in extList:
+                litem = re.findall(r'.*[.][a-zA-Z]+[\/]', litem)
+                if litem == ogurl and not item1 in backlinkList:
+                    mycounter = 'backlink'
+                    backlinkList.append(item1)
+                    mycounter = mycounter + str(counter)
+                    workingd[mycounter] = item1    
+                    counter += 1
+                        
+                else:
+                    pass
+            for litem in extList:
+                litem = re.findall(r'.*[.][a-zA-Z]+[\/]', litem)
+                if litem!= ogurl and not item1 in nobacklinkList or backlinkList: 
+                    mycounter1 = 'no-backlink'
+                    nobacklinkList.append(item1)
+                    mycounter1 = mycounter1 + str(counter)
+                    workingd[mycounter1] = item1     
+                    counter1 += 1
+                    print(backlinkList)
+                    print(nobacklinkList)
+                    print(item1)
+                    print("no-backlink" + str(counter1)) 
+                    print("2")    
+                else:
+                    pass
+            #find out what the fuck is happening in these add print statement. item1 is being added even if it's in the lists
+        if item1 not in backlinkList or nobacklinkList:
+            nobacklinkList.append(item1)
+            mycounter1 = 'no-backlink'
+            mycounter1 = mycounter1 + str(counter1)
+            workingd[mycounter1] = item1
+            counter1 += 1
+            print(backlinkList)
+            print(nobacklinkList)
+            print(item1)
+            print("no-backlink" + str(counter1))
+            print("3")
+    print(workingd)         
+    return workingd
+      
+    return
+    exit()
+
+
+
+if __name__ == '__main__':
+    controller(url)
+
+#elif i == 2: 
+# need to follow (for loop) ext links and repeat (inside step 3) step 1 and 2,,, return a dict with trusting untrusting disallowed attached 
+
+
+
+
+
+
+

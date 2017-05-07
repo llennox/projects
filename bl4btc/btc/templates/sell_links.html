@@ -1,0 +1,140 @@
+{% extends "userbase.html" %}
+{% block content %}
+
+<div class="buyBacklink">
+<p  class="allText">domains:</p>
+
+{% if domains %}
+
+{% for dom in domains %}
+
+<p  class="allText"> URL:{{ dom.website }} moz score:{{ dom.mozscore }}
+{% if dom.listed == True %}
+<a href="http://localhost:8000/list_unlist/{{ dom.urluuid }}"   class="col-sm-push-6 btn btn-primary text-uppercase btn-sm">unlist link</a>
+{% else %}
+<a href="http://localhost:8000/list_unlist/{{ dom.urluuid }}"   class="col-sm-push-6 btn btn-primary text-uppercase btn-sm">list link</a>
+
+{% endif %}
+{% endfor %}
+
+{% else %}
+
+<p  class="allText">None</p>
+
+{% endif %}
+</div>
+{% load tags %}
+<p  class="allText">your domain will be priced by moz domain authority please, check your moz domain authority here: <a href="https://moz.com/researchtools/ose/"class="customHome">Moz domain authority</a></p>
+<p  class="allText">note: these prices are for 30 days</p>
+<div class="buyBacklink">
+<table class="allText">
+  <tr>
+    <th>MOZ DA</th>
+    <th>Homepage price</th>
+    <th>subpage price</th>
+  </tr>
+  <tr>
+    <td>0-9 ||</td>
+    <td>$0.15 = {{ 0.15|div:btcPrice }} credits ||</td>
+    <td>$0.0375 = {{ 0.0375|div:btcPrice }} credits</td>
+  </tr>
+  <tr>
+    <td>10-14 ||</td>
+    <td>$0.75 = {{ 0.75|div:btcPrice }} credits ||</td>
+    <td>$0.1875 = {{ 0.1875|div:btcPrice }} credits</td>
+  </tr>
+  <tr>
+    <td>15-19 ||</td>
+    <td>$1.50 = {{ 1.50|div:btcPrice }} credits ||</td>
+    <td>$0.375 = {{ 0.375|div:btcPrice }} credits</td>
+  </tr>
+  <tr>
+    <td>20-24 ||</td>
+    <td>$2.25 = {{ 2.25|div:btcPrice }} redits ||</td>
+    <td>$0.5625 = {{ 0.5625|div:btcPrice }} credits</td>
+  </tr>
+  <tr>
+    <td>25-29 ||</td>
+    <td>$3 = {{ 3|div:btcPrice }} credits ||</td>
+    <td>$0.75 = {{ 0.75|div:btcPrice }} credits</td>
+  </tr>
+  <tr>
+    <td>30-34 ||</td>
+    <td>$4.5 = {{ 4.5|div:btcPrice }} credits ||</td>
+    <td>$1.125 = {{ 1.125|div:btcPrice }} credits</td>
+  </tr>
+  <tr>
+    <td>35-39 ||</td>
+    <td>$6.75 = {{ 6.75|div:btcPrice }} credits ||</td>
+    <td>$1.6875 = {{ 1.6875|div:btcPrice }} credits</td>
+  </tr>
+  <tr>
+    <td>40-44 ||</td>
+    <td>$15 = {{ 15|div:btcPrice }} credits ||</td>
+    <td>$3.75 = {{ 3.75|div:btcPrice }} credits</td>
+  </tr>
+  <tr>
+    <td>45-100 ||</td>
+    <td>$22.5 = {{ 22.5|div:btcPrice }} credits ||</td>
+    <td>$5.625 = {{ 5.625|div:btcPrice }} credits</td>
+  </tr>
+</table>
+</div>
+
+{% if error == True %}
+<p class="allText">could not check moz score, please make sure your url is correct and try again later</p>
+{% endif %}
+<p class="allText">please enter the domain you would like to host backlinks on, include tags that describe your website.</p>
+
+{{ success }}
+
+<form method="post" action="/sell_links/">
+    {{ form.non_field_errors }}
+    {% csrf_token %}
+    <p  class="allText">Your domain's Url:</p>
+    <div class="fieldWrapper">
+        {{ form.sellUrl.errors }}
+
+        {{ form.sellUrl }}
+        
+    </div>
+    
+    <p  class="allText">tag1:</p>
+    <div class="fieldWrapper">
+        {{ form.tag1.errors }}
+                    
+        {{ form.tag1 }}
+    </div>
+    <p  class="allText">tag2:</p>
+    <div class="fieldWrapper">
+        {{ form.tag2.errors }}
+                    
+        {{ form.tag2 }}
+    </div>
+    <p  class="allText">tag3:</p>
+    <div class="fieldWrapper">
+        {{ form.tag3.errors }}
+                    
+        {{ form.tag3 }}
+    </div>
+    <p  class="allText">tag4:</p>
+    <div class="fieldWrapper">
+        {{ form.tag4.errors }}
+                    
+        {{ form.tag4 }}
+    </div>
+    <p  class="allText">tag5:</p>
+    <div class="fieldWrapper">
+        {{ form.tag5.errors }}
+                    
+        {{ form.tag5 }}
+    </div>
+    
+    <div class="g-recaptcha" data-sitekey="6Le4TQgUAAAAAKY5pQW7n6e32O522ATSmJnO0bMK"></div>
+    <p class="newSearch"><button type="submit" tabindex="8" id="check_moz" 
+    class="col-sm-push-6 btn btn-primary text-uppercase btn-large">Check moz score</button></p>
+</form>
+
+
+
+{% endblock %}

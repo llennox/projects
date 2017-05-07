@@ -1,0 +1,44 @@
+
+
+
+<p>API DOCS ##</p>
+<p>please contact me if you want to help with the mobile application or hire me as a django developer gonnellcough@gmail.com </p>
+
+<p>http POST 127.0.0.1:8000/user/ username='test' isanon='True' password='password' email='email@example.com'</p> 
+
+<p>this registers users returns auth token</p>
+
+<p>http POST 127.0.0.1:8000/login/ authtoken='authtoken' isanon='True or False'<p>
+
+<p>logs a user in returns authtoken if you use username and password</p>
+
+<p>http GET 127.0.0.1:8000/logout/{authtoken} <p>
+
+<p>logs user out!!! doesn't actually work</p>
+
+<p>http PUT 127.0.0.1:8000/user/{username}/ authtoken='82eb4339c07a030171e66152cf78d53862ef15d7' newpassword='newpassword' password='password'</p>
+
+<p>changes password</p>
+
+<p>http DELETE 127.0.0.1:8000/user/{username}/ authtoken='82eb4339c07a030171e66152cf78d53862ef15d7' password='password'</p>
+
+<p> makes user inactive, log in to reactivate user</p>
+
+<p>http GET http://127.0.0.1:8000/photos/12.111/12.111/{authtoken}<p>
+
+<p> returns all photos for given gps coordinates</p>
+
+<p>curl -F "lat=12.111" -F "lon=12.111" -F "authtoken=authtoken" -F "caption=this is a caption" -H "Content-Type: multipart/form-data" -F "media=@/home/directory/Pictures/iceax.jpg" -X POST http://127.0.0.1:8000/photos/</p> 
+
+<p> uploads photo,I won't need poster, that will be taken from auth token</p>
+
+<p>curl -F "authtoken=authtoken" -F "uuid=uuidofphoto" -X DELETE http://127.0.0.1:8000/photos/</p>
+
+<p>deletes photo</p>
+
+
+
+<p>next view do comments, profile image and bio, view to change between anon posting</p>
+
+
+

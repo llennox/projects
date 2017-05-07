@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+{% load staticfiles %}
+<title>bl4btc</title>
+
+<p class="homeText">Welcome to bl4btc.io, this is a website designed to allow you to buy and sell backlinks. Acquiring backlinks for your domain will raise its ranking in search engines. </p>
+
+                                            <p class="lhomeText">How to buy backlinks using this site:</p>
+ 
+
+ <p class="homeText">first you’ll need to create an account, all we need is your email a username and password. Be sure to choose a secure password. </p>
+<div class="buyBacklink1">
+<img src="{% static 'images/signIn.png' %}" class="topLogo1" alt="oh shit">
+</div>
+
+<p class="homeText">After you validate your email you can sign in</p>
+<div class="buyBacklink1">
+ <img src="{% static 'images/register.png' %}" class="topLogo1" alt="oh shit">
+</div>
+<p  class="homeText">Next you’ll need to deposit bitcoins, one site credit is worth one millibit or 1/1000th of a bitcoin. Prices for backlinks range between .07 and 50 credits or millibits. You can find your deposit address in your dashboard.</p>
+<div class="buyBacklink1">
+ <img src="{% static 'images/dashboard.png' %}" class="topLogo1" alt="oh shit">
+</div>
+<p class="homeText">After signing in you can navigate to the buy links tab, here there will be a list of domains that are selling backlinks. You want to choose a domain as similar to your website as possible, so use the search function to navigate, choose sites based on their MOZ score<link> the higher a domains Moz score the higher the ranking you will be awarded by search engines. Also search for tags to find domains that are similar to the website you are marketing. Finally navigate by searching using subpage = True or False. If subpage is true/checked the domain may be http://example.com/anothertab/ where is if subpage is false the domain would be http://example.com. Subpage backlinks do not add to your ranking as much as non subpage backlinks, they are ¼ the cost. </p>
+<div class="buyBacklink1">
+<img src="{% static 'images/buybacklink.png' %}" class="topLogo1" alt="oh shit">
+</div>
+
+<p class="homeText">After finding a backlink you would like to purchase click buy back link. You will be redirected to a confirmation page where you will enter the URL you are marketing and confirm your purchase. Your credits will be placed in escrow. </p>
+<div class="buyBacklink1">
+<img src="{% static 'images/buy_link_confirmation.png' %}" class="topLogo1" alt="oh shit">
+</div>
+<p class="homeText">The user selling backlinks will be alerted they have an offer and either add your url to their page and validate wherein your credits will be held in escrow for thirty days while your back link is hosted or they will deny the offer wherein your credits in escrow will be added back to your spendable wallet. If they do not validate or deny in three days time your credits will be taken out of escrow and returned to you. My webcrawler will check intermittently throughout the 30 day time period to make sure your link is still being hosted. </p>
+
+<div class="buyBacklink1">
+<img src="{% static 'images/linkbeinghosted.png' %}" class="topLogo1" alt="oh shit">
+</div>
+<p class="lhomeText">How to Sell Backlinks:</p>
+
+
+<p class="homeText">first navigate to the sell links tab, enter your domain name and tags that describe it then click check moz score, this will list your domain in the buy links tab. You can choose to list or unlist your website at anytime in the sell links tab.</p>
+<div class="buyBacklink1">
+ <img src="{% static 'images/sell_links.png' %}" class="topLogo1" alt="oh shit">
+ </div>
+
+<p class="homeText">when someone decides to buy a backlink on your domain, you are sent a notification. After you navigate to your dashboard you will find the link you can add to your website there. If you don’t want to host the link simply press deny. If you do want to host the link, add it to the domain name specified and click validate. Make sure a robots.txt file is not blocking this domain. After the link is validated it will appear in your hosted links on your dashboard. I will intermittently check to make sure you are still hosting the link for thirty days. At the end of thirty days your account will be credited and you can withdrawal your bitcoins. </p>
+<div class="buyBacklink1">
+<img src="{% static 'images/hostedsell.png' %}" class="topLogo1" alt="oh shit">
+</div>
+
+<p class="homeText">Your refferal link is at the bottom of your dashboard, if people use this link to register you will recieve 5% of credits issued to them for hosting backlinks</p>
+
+<div class="buyBacklink1">
+<img src="{% static 'images/refferalLink.png' %}" class="topLogo1" alt="oh shit">
+</div>
+
+
+{% endblock %}

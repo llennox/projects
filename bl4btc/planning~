@@ -1,0 +1,45 @@
+work on new activation link plug holes v/
+
+create sign in page  v/
+
+make sure same email can't be used twice, username can't be taken v/
+
+change password view/ forgot username* functional tests start here, at change password test it v/
+
+getcurrentbitcoin price  v/
+
+dashboard view/ change btc address account history etc., regex btc addresses custom fields, , ,bc sqli
+*withdraw/ deposit
+*account balance
+*account history
+
+create view for sellers, adding website that links to their account and sends an email if anyone selects them. 
+*must add thier btc address, website, tags/categories.
+*if requirements are satisfied automatic deposit to their wallets. 
+
+view for buyers that allows them to view possible websites to list thier back link on and webdriver to help them. place to deposit btc for credit. 
+*view that records when credits are spent/bought in database
+
+script that checks moz score, script that checks for link
+
+django security checklist
+
+sign emails at some point
+
+add captcha to everything
+
+########################################BITCOIN
+
+1) wallet on server
+
+2) wallet on my ext 
+
+two wallets, one offline on my ext hard drive 20% of all bits sent to wallet 1 are sent here. 
+
+wallet two generates public addresses with bip32 pycoin, puts them in database, assigns them to users, when a transaction comes in it finds user associated with that address and credits their account. when user withdrawals number of credits are converted to btc wallet 2 sends transaction, if it's over 100$~ wait for my confirmation maybe send email. 
+
+
+
+
+
+

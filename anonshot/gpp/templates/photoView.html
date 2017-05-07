@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+
+<p>your location: {{ place }}</p>
+{% if photo.poster == "anon" %}
+
+<p>posted by: anon</p>
+{% else %}
+<a href="{% url 'photoView'  photo.uuid %}" id="sign_page">{{ photo.poster }}</a>
+{% endif %}
+
+<img src="https://s3.amazonaws.com/anonshot/{{ photo.uuid }}.jpg" />
+{% if request.user.username == photo.poster %}
+<a id="fd" href="{% url 'delete_photo' uuid=photo.uuid username=request.user.username %}">delete</a>
+{% else %} 
+<a id="fd" href="{% url 'flag_photo' uuid=photo.uuid %}">flag</a>
+{% endif %}
+<p>{{ photo.caption }}</p>
+<p>distance from your global ip: {{ photo.distance }} miles</p>
+<p>time published: {{ photo.timestamp }}</p>
+<p>posted from: {{ photo.place }}</p>
+
+{% for comment in photo.return_comments %}
+<div id="commentCont">
+
+{% if comment.user == 'anon' %}<a href="{% url 'photoView'  photo.uuid %}" id="commentAnon">{{ comment.user }}: </a>{% else %}<a href="{% url 'viewProfile_page'  comment.user %}" id="comment">{{ comment.user }}: </a>{% endif %}<p id="comment">{{ comment.comment }}</p><p id="time">    {{ comment.date }}</p>{% if comment.user == request.user.username %}<a id="dc" href="{% url 'delete_comment' uuid=comment.uuid username=comment.user photouuid=photo.uuid %}">delete comment</a>{% endif %}<br>
+
+{% endfor %}
+<a NAME="bottom">
+<form class="form-inline" action="/photoView/{{ photo.uuid }}/#bottom" method="post">
+    {{ form.non_field_errors }}
+    {% csrf_token %}
+    <input hidden name="uuid" value="{{ photo.uuid }}" > 
+    
+    <div class="fieldWrapperDates">
+        {{ form.message.errors }}
+
+        {{ form.message }}
+        
+    </div>
+    <div id="{{ photo.uuid }}captcha" class="g-recaptcha" data-sitekey="6Le4TQgUAAAAAKY5pQW7n6e32O522ATSmJnO0bMK"></div>
+ <p class="newSearch"><button class="btn btn-info" type="submit" tabindex="8" id="verify_email" 
+    >Make Comment</button></p>
+            
+</form>
+</div>
+
+
+{% endblock %}

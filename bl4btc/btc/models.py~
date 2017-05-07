@@ -1,0 +1,41 @@
+from django.db import models
+from django.contrib.auth.models import User
+import requests, json
+from django.utils import timezone
+import re
+
+class Profil(models.Model):
+    user = models.OneToOneField(User, related_name='profil') #1 to 1 link with Django User
+    activation_key = models.CharField(max_length=40)
+    key_expires = models.DateTimeField()
+    withdrawal_add = models.CharField(max_length=35,default=0)#custom validation field protect agains SQLi
+    deposit_add = models.CharField(max_length=35,default=0)##custom validation field protect agains SQLi
+    account_balance = models.IntegerField(default=0)   
+
+class sysvar(models.Model):
+    timestamp = models.DateTimeField()
+    btcPrice = models.CharField(default=10,max_length=40)
+    
+class buyUrls(models.Model):
+    user = models.OneToOneField(User, related_name='webpage') #1 to 1 link with Django User
+    website = models.URLField() 
+    mozscore = models.IntegerField(default=0) # call bot in views
+    price = models.IntegerField(default=0)   
+
+            
+class sellUrls(models.Model):
+    user = models.OneToOneField(User, related_name='backlink') #1 to 1 link with Django User
+    activelink = models.URLField()  
+    website = models.URLField() 
+    validated = models.BooleanField()
+
+
+class escrowPayoutLedger(models.Model):
+    escrow = models.BooleanField()
+    #link name 
+    #website name
+    #amount
+    #timestamp of buyers confirmation
+    #timestamp of sellers confirmation
+    #timestamp of sellers confirmation + 30 days 
+    

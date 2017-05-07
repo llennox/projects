@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+{% load staticfiles %}
+<title>contact_us</title>
+
+{{ message }}
+
+    <img src="{% static 'images/me.JPG' %}" class="me" alt="oh shit"></a>
+
+
+<form class="form-inline" action="/contact_page/" method="post">
+    {{ form.non_field_errors }}
+    {% csrf_token %}
+    <p  class="allText">your email:</p>
+    <div >
+        {{ form.fromfield.errors }}
+
+        {{ form.fromfield }}
+        
+    </div>
+    
+    <p class="allText">subject:</p>
+    <div >
+        {{ form.subject.errors }}
+                    
+        {{ form.subject }}
+    </div>
+    <p class="allText">message:</p>
+    <div >
+        {{ form.body.errors }}
+                    
+        {{ form.body }}
+    </div>
+    
+    
+    <p class="sendemail"><button type="submit" tabindex="8" id="sign_in" 
+    class="col-sm-push-6 btn btn-primary text-uppercase btn-large">Send</button></p>
+
+</form>
+
+
+{% endblock %}

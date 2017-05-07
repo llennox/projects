@@ -1,0 +1,32 @@
+{% extends "userbase.html" %}
+{% block content %}
+{% load tags %}
+
+{% if success  %}
+<p class="allText">{{ success }}</p>
+<a href="http://localhost:8000/buy_links/"class="btn btn-primary text-uppercase btn-large">Go Back</a></button>
+
+{% else %}
+
+{% for domains in domain %}
+<form class="form-inline" action="/buy_link_confirmation/{{ domains.urluuid }}" method="post">
+{{ form.non_field_errors }}
+    {% csrf_token %}
+<p class="allText">click confirm to buy for domain with the unique ID {{ domains.urluuid }} and price of {{ domains.price|div:btcPrice }} credits</p>
+
+<p class="allText">please enter the url you would like to be hosted on the site</p>
+<div class="urlForm">
+        {{ form.url.errors }}
+
+        {{ form.url }}    
+</div>
+
+<button type="submit" tabindex="8" id="confirm_buy"
+class="col-sm-push-6 btn btn-primary text-uppercase btn-large">Confirm</button>
+
+<a href="http://localhost:8000/buy_links/"class="col-sm-push-6 btn btn-primary text-uppercase btn-large">Go Back</a>
+</form>
+
+{% endfor %}
+{% endif %}
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+
+<p>your location: {{ place }}</p>
+
+{% for photo in photos %}
+<a name="{{ photo.uuid }}">
+<div id="{{ photo.uuid }}" ></div>
+{% if photo.poster == "anon" %}
+
+<a href="{% url 'photoView'  photo.uuid %}">anon</a>
+{% else %}
+<a href="{% url 'viewProfile_page'  photo.poster %}" id="sign_page">{{ photo.poster }}</a>
+{% endif %}
+<a href="{% url 'photoView'  photo.uuid %}">
+<img src="https://s3.amazonaws.com/anonshot/{{ photo.uuid }}.jpg" />
+</a>
+{% if request.user.username == photo.poster %}
+<a id="fd" href="{% url 'delete_photo' uuid=photo.uuid username=request.user.username %}">delete</a>
+{% else %} 
+<a id="fd" href="{% url 'flag_photo' uuid=photo.uuid %}">flag</a>
+{% endif %}
+<p>{{ photo.caption }}</p>
+<p>distance from your global ip: {{ photo.distance }} miles</p>
+<p>posted from: {{ photo.place }}</p>
+<p>time published: {{ photo.timestamp }}</p>
+<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#c{{ photo.uuid }}">View/Make Comment(s)</button>
+<div id="c{{ photo.uuid }}" class="collapse">
+{% for comment in photo.return_comments %}
+<div id="commentCont">
+{% if comment.user == 'anon' %}<a href="{% url 'photoView'  photo.uuid %}" id="commentAnon">{{ comment.user }}: </a>{% else %}<a href="{% url 'viewProfile_page'  comment.user %}" id="comment">{{ comment.user }}: </a>{% endif %}<p id="comment">{{ comment.comment }}</p><p id="time">    {{ comment.date }}</p>{% if comment.user == request.user.username %}<a id="fd" href="{% url 'delete_comment' uuid=comment.uuid username=comment.user photouuid=photo.uuid %}">delete comment</a>{% endif %}<br>
+</div>
+{% endfor %}
+<form class="form-inline" action="/photoView/{{ photo.uuid }}/#bottom" method="post">
+    {{ form.non_field_errors }}
+    {% csrf_token %}
+    <input hidden name="uuid" value="{{ photo.uuid }}" > 
+    
+    <div class="fieldWrapperDates">
+        {{ form.message.errors }}
+
+        {{ form.message }}
+        
+    </div>
+ <p class="newSearch"><button class="btn btn-info" type="submit" tabindex="8" id="verify_email" 
+    >Make Comment</button></p>
+            
+</form>
+</div>
+{% endfor %}
+
+{% endblock %}

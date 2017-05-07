@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+{% load staticfiles %}
+<title>anonshot Alpha release</title>
+<p>These are the most recent photos to be posted</p>
+{% for photo in photos %}
+<div id="{{ photo.uuid }}" ></div>
+{% if photo.poster == "anon" %}
+
+<p>posted by: anon</p>
+{% else %}
+<a href="{% url 'photoView'  photo.uuid %}" id="sign_page">{{ photo.poster }}</a>
+{% endif %}
+
+<a href="{% url 'photoView'  photo.uuid %}">
+<img src="https://s3.amazonaws.com/anonshot/{{ photo.uuid }}.jpg" />
+</a>
+{% if request.user.username == photo.poster %}
+<a id="fd" href="{% url 'delete_photo' uuid=photo.uuid username=request.user.username %}">delete</a>
+{% else %} 
+<a id="fd" href="{% url 'flag_photo' uuid=photo.uuid %}">flag</a>
+{% endif %}
+<p>{{ photo.caption }}</p>
+<p>distance from your global ip: {{ photo.distance }} miles</p>
+<p>time published: {{ photo.timestamp }}</p>
+<p>posted from: {{ photo.place }}</p>
+{% endfor %}
+<img src="https://s3.amazonaws.com/anonshot/Scan2.jpg">
+
+
+{% endblock %}

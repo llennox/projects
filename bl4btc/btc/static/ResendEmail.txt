@@ -1,0 +1,1 @@
+Greetings, thank you for joining bl4btc.io {{ activation_link }} follow this link to activate your account.

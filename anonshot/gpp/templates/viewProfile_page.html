@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block content %}
+{% if owner == True %}
+<p id="commentUser">{{ profile.user }}</p><br>
+<p>{{ profile.bio }}</p>
+<img id="profile-img" alt="no image uploaded" src="https://s3.amazonaws.com/anonshot/{{ profile.uuid }}.jpg" />
+
+
+<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">Edit Profile</button>
+<div id="demo" class="collapse">
+<form class="form-inline" action="/editBio/{{ request.user.username }}/" method="post">
+    {{ form.non_field_errors }}
+    {% csrf_token %}
+    <p  class="allText">Bio:</p>
+    <div class="fieldWrapperDates">
+        {{ bioform.bio.errors }}
+
+        {{ bioform.bio }}
+        
+    </div>
+ <p class="newSearch"><button class="btn btn-info" type="submit" tabindex="8" id="verify_email">save</button></p>
+</form>
+<form class="form-inline" action="/editProfileImg/{{ request.user.username }}/" method="post" enctype="multipart/form-data">
+    {{ form.non_field_errors }}
+    {% csrf_token %}
+    <p class="allText">choose photo for profile picture:</p>
+    <div>
+        {{ imform.photo.errors }}
+
+        {{ imgform.photo }}
+        
+    </div>
+ <p class="newSearch"><button class="btn btn-info" type="submit" tabindex="8" id="verify_email">save</button></p>
+
+</form>
+<a href="{% url 'change_password'%}" id="sign_page">change password</a>
+</div>
+{% else %}
+<p id="commentUser">{{ profile.user }}</p><br>
+<p>{{ profile.bio }}</p>
+<img id="profile-img" alt="no image uploaded" src="https://s3.amazonaws.com/anonshot/{{ profile.uuid }}.jpg" />
+
+{% endif %} 
+
+<p>your location: {{ place }}</p>
+
+{% for photo in photos %}
+<div id="{{ photo.uuid }}" ></div>
+{% if photo.poster == "anon" %}
+
+<p>posted by: anon</p>
+{% else %}
+<a href="{% url 'photoView'  photo.uuid %}" id="sign_page">{{ photo.poster }}</a>
+{% endif %}
+
+<a href="{% url 'photoView'  photo.uuid %}">
+<img src="https://s3.amazonaws.com/anonshot/{{ photo.uuid }}.jpg" />
+</a>
+{% if request.user.username == photo.poster %}
+<a id="fd" href="{% url 'delete_photo' uuid=photo.uuid username=request.user.username %}">delete</a>
+{% else %} 
+<a id="fd" href="{% url 'flag_photo' uuid=photo.uuid %}">flag</a>
+{% endif %}
+<p>{{ photo.caption }}</p>
+<p>distance from your global ip: {{ photo.distance }} miles</p>
+<p>time published: {{ photo.timestamp }}</p>
+<p>posted from: {{ photo.place }}</p>
+<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#c{{ photo.uuid }}">View/Make Comment(s)</button>
+<div id="c{{ photo.uuid }}" class="collapse">
+{% for comment in photo.return_comments %}
+<div id="commentCont">
+{% if comment.user == 'anon' %}<a href="{% url 'photoView'  photo.uuid %}" id="commentAnon">{{ comment.user }}: </a>{% else %}<a href="{% url 'viewProfile_page'  comment.user %}" id="comment">{{ comment.user }}: </a>{% endif %}<p id="comment">{{ comment.comment }}</p><p id="time">    {{ comment.date }}</p>{% if comment.user == request.user.username %}<a id="dc" href="{% url 'delete_comment' uuid=comment.uuid username=comment.user photouuid=photo.uuid %}">delete comment</a>{% endif %}<br>
+</div>
+{% endfor %}
+{% if photo.return_comments.count >= 100 %}
+<p>thread is locked because there are 100 comments</p> 
+{% else %}
+<form class="form-inline" action="/photoView/{{ photo.uuid }}" method="post">
+    {{ form.non_field_errors }}
+    {% csrf_token %}
+    <input hidden name="uuid" value="{{ photo.uuid }}" > 
+    <p  class="allText">comment:</p>
+    <div class="fieldWrapperDates">
+        {{ form.message.errors }}
+
+        {{ form.message }}
+        
+    </div>
+
+    <p class="newSearch"><button class="btn btn-info" type="submit" tabindex="8" id="verify_email" 
+    >Make Comment</button></p>
+            
+</form>
+{% endif %}
+</div>
+
+{% endfor %}
+
+
+
+
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "userbase.html" %}
+{% block content %}
+
+<form class="form-inline" action="/buy_links/" method="post">
+    {{ form.non_field_errors }}
+    {% csrf_token %}
+    <p  class="allText">MOZ domain authority score</p>
+    <div class="fieldWrapperDates">
+        {{ form.mozFilter.errors }}
+
+        {{ form.mozFilter }}
+        
+    </div>
+    
+    <p  class="allText">Search tags:</p>
+    <div class="fieldWrapper">
+        {{ form.search.errors }}
+                    
+        {{ form.search }}
+    </div>
+    <p  class="allText">subpage:</p>
+    <div class="fieldWrapper">
+        {{ form.subPage.errors }}
+                    
+        {{ form.subPage }}
+    </div>  
+    
+    <button type="submit" tabindex="8" id="verify_email" 
+    class="col-sm-push-6 btn btn-primary text-uppercase btn-large">Search/Filter</button>
+</form>
+
+<p  class="allText">Search results:</p>
+{% if domains %}
+
+{% for esc in domains %}
+<div class="buyBacklink">
+<p  class="allText">url id: {{ esc.urluuid }}</p>
+<p  class="allText">is a subdomain: {{ esc.subpage }}</p>
+<p  class="allText">moz domain authority score:{{ esc.mozscore }} </p><p class="allText">price: {{ esc.price }} credits</p>
+<p  class="allText">tags: {{ esc.tags }}</p>  <a href="http://localhost:8000/buy_link_confirmation/{{ esc.urluuid }}" id="buy_link_button" class="col-sm-push-6 btn btn-primary text-uppercase btn-large">Buy backlink</a>
+</div>
+{% endfor %}
+{% else %}
+
+<p class="allText">None</p>
+
+{% endif %}
+
+
+
+
+{% endblock %}
+
+

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if owner == True %}
+<div>
+<p id="commentUser">{{ request.user.username }}</p>
+<p>form to change bio, and choose profile picture</p>
+</div>
+{% else %}
+<p>you don't own this account or you're not logged in</p>
+<a href="http://localhost:8000/sign_page/" id="sign_page">Sign In</a>
+{% endif %} 
+
+{% endblock %}

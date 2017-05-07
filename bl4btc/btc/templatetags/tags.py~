@@ -1,0 +1,8 @@
+from btc.forms import RegistrationForm
+from django import template
+
+register = template.Library()
+
+@register.filter(name='return_link')
+def return_link():
+    return(RegistrationForm.sendEmail.message)

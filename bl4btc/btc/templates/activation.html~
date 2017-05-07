@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+
+<title>Activation</title>
+{% if activation_expired %}
+<p>resend activation email</p>
+
+<a href="http://localhost:8000/new-activation-link/{{ user_id }}">send a new activation link!</a>
+
+{% elif already_active %}
+<p>your account is already active<p>
+{% else %}
+<p>your account has been activated!!</p>
+{% endif %}
+{% endblock %}
