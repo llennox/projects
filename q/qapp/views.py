@@ -22,8 +22,7 @@ import operator
 
 
 bucket_name ='anonshot'
-AWS_ACCESS_KEY_ID="AKIAIVI7HCVVODBCDSHQ"
-AWS_SECRET_ACCESS_KEY="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"
+
 
 def api_documentation(request):  ### popup that presents rules. 
     
